@@ -23,6 +23,10 @@ def main():
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(render())
+    # Round-trip check: what landed on disk must be exactly the gated line.
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        if f.read() != LINE:
+            raise ValueError("written entry.txt does not match the gated line")
 
 
 if __name__ == "__main__":
